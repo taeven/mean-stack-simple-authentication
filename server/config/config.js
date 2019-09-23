@@ -17,12 +17,12 @@ const envSchema = Joi.object({
     MONGO_HOST: Joi.string()
         .required()
         .description("mongo hostname is required i.e. 127.0.0.1"),
-    MONGO_PORT: Joi.number().default(27017)
+    MONGO_PORT: Joi.number().default(27017),
+    SALT_ROUNDS: Joi.number().default(12)
 })
     .unknown()
     .required();
 
-console.log(process.env);
 const { env, error, warning } = envSchema.validate(process.env);
 if (error) {
     throw new Error(`Config validation error: ${error.message}`);
@@ -37,7 +37,8 @@ const config = {
     mongo: {
         host: process.env.MONGO_HOST,
         port: process.env.MONGO_PORT
-    }
+    },
+    saltRounds: process.env.SALT_ROUNDS
 };
 
 module.exports = config;
