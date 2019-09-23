@@ -11,6 +11,11 @@ const envSchema = Joi.object({
         then: Joi.boolean().default(true),
         otherwise: Joi.boolean().default(false)
     }),
+    SERVER_URL: Joi.string().when("NODE_ENV", {
+        is: Joi.string().equal("development"),
+        then: Joi.string().default("http://localhost"),
+        otherwise: Joi.string().required()
+    }),
     JWT_SECRET: Joi.string()
         .required()
         .description("JWT Secret required to sign"),
@@ -18,7 +23,8 @@ const envSchema = Joi.object({
         .required()
         .description("mongo hostname is required i.e. 127.0.0.1"),
     MONGO_PORT: Joi.number().default(27017),
-    SALT_ROUNDS: Joi.number().default(12)
+    SALT_ROUNDS: Joi.number().default(12),
+    SG_API_KEY: Joi.string().required()
 })
     .unknown()
     .required();
@@ -38,7 +44,9 @@ const config = {
         host: process.env.MONGO_HOST,
         port: process.env.MONGO_PORT
     },
-    saltRounds: process.env.SALT_ROUNDS
+    saltRounds: process.env.SALT_ROUNDS,
+    sgApiKey: process.env.SG_API_KEY,
+    serverUrl: process.env.SERVER_URL
 };
 
 module.exports = config;

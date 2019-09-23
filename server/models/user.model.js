@@ -14,7 +14,8 @@ const UserSchema = new mongoose.Schema({
             "Please enter a valid email"
         ]
     },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    isVerified: { type: Boolean, default: false, required: false }
 });
 
 UserSchema.plugin(uniqueValidator, { message: "Email already exists" });
