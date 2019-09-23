@@ -1,12 +1,10 @@
 const express = require("express");
-const config = require("../config/config");
 const bcrypt = require("bcrypt");
 const formatResponse = require("../controllers/responseFormatter");
 const User = require("../models/user.model");
+const verificationController = require("../controllers/verificationController");
 const router = express.Router();
-
 router.post("/user", (req, res) => {
-    console.log(config.saltRounds);
     var hashedPassword = bcrypt.hashSync(req.body.password, 12);
 
     User.create(
@@ -24,6 +22,7 @@ router.post("/user", (req, res) => {
                 response.message = err.message;
                 res.status(400);
             } else {
+                verificationController.generateVerificationToken(user.email);
                 response.message = `${user.email} registered successfullly`;
                 res.status(200);
             }
