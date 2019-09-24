@@ -1,8 +1,9 @@
 const BadAttempt = require('../models/badAttempt.model');
 const User = require('../models/user.model');
-const errorhandler = require('../controllers/errorhandler');
+const errorhandler = require('./errorhandler');
+const IP = require('../models/ip.model');
 
-function handleBadAttempt(email) {
+function handleBadAttempt(email, ip, hostname) {
   BadAttempt.findOne({ email }, (err, doc) => {
     if (!doc) {
       return BadAttempt.create({ email, count: 1 }, errorhandler);
@@ -22,6 +23,9 @@ function handleBadAttempt(email) {
       { count: doc.count + 1 },
       errorhandler,
     );
+  });
+  IP.findOne({ ip }, (err, doc) => {
+    if (!doc) IP.create({ ip, hostname }, errorhandler);
   });
 }
 

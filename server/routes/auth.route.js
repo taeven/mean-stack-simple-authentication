@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const responseFormatter = require('../controllers/responseFormatter');
 const User = require('../models/user.model');
 const Session = require('../models/session.model');
-const checkLogin = require('../middleware/chekLogin.middleware');
+const isIpAllowed = require('../middleware/blockIp.middleware');
+const checkLogin = require('../middleware/checkLogin.middleware');
 const verificationController = require('../controllers/verificationController');
 const {
   handleBadAttempt,
@@ -43,6 +44,8 @@ router.post('/user', (req, res) => {
 
 router.get('/login', checkLogin, (req, res) => {
   const { email, password } = req.body;
+  const { ip, hostname } = req;
+
   if (!email || !password) return responseFormatter.badReqResponse(res);
 
   return User.findOne({ email }, (err, user) => {
@@ -91,7 +94,7 @@ router.get('/login', checkLogin, (req, res) => {
     }
 
     // password doesnt match or user doesn't exist
-    handleBadAttempt(email);
+    handleBadAttempt(email, ip, hostname);
     return responseFormatter.sendResponse(res, 200, 'authentication failed');
   });
 });
