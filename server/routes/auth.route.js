@@ -7,15 +7,16 @@ const verificationController = require('../controllers/verificationController');
 const router = express.Router();
 router.post('/user', (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 12);
+  const { name, email, country, dob, timezone } = req.body;
 
   User.create(
     {
-      name: req.body.name,
-      email: req.body.email,
+      name,
+      email,
       password: hashedPassword,
-      country: req.body.country,
-      dob: req.body.dob,
-      timezone: req.body.timezone,
+      country,
+      dob,
+      timezone,
     },
     (err, user) => {
       if (err) {
@@ -30,6 +31,22 @@ router.post('/user', (req, res) => {
       }
     },
   );
+});
+
+router.get('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return responseFormatter.badReqResponse(res);
+
+  return User.findOne({ email }, (err, user) => {
+    if (err) return responseFormatter.internalErrorResponse(res);
+    if (user && bcrypt.compareSync(password, user.password))
+      return responseFormatter.sendResponse(res, 200, {
+        status: 'login success',
+        user: user.email,
+      });
+
+    return responseFormatter.sendResponse(res, 200, 'authentication failed');
+  });
 });
 
 module.exports = router;
