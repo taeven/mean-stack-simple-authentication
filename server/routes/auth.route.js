@@ -6,6 +6,10 @@ const User = require('../models/user.model');
 const Session = require('../models/session.model');
 const checkLogin = require('../middleware/chekLogin.middleware');
 const verificationController = require('../controllers/verificationController');
+const {
+  handleBadAttempt,
+  clearBadAttempts,
+} = require('../controllers/badAttemptController');
 const config = require('../config/config');
 
 const router = express.Router();
@@ -43,8 +47,19 @@ router.get('/login', checkLogin, (req, res) => {
 
   return User.findOne({ email }, (err, user) => {
     if (err) return responseFormatter.internalErrorResponse(res);
+
+    // password matches
     if (user && bcrypt.compareSync(password, user.password)) {
-      const jwtToken = jwt.sign(JSON.stringify({ email }), config.jwtSecret);
+      // check if account is still locked
+      if (user.isLocked && user.lockedTill > Date.now()) {
+        return responseFormatter.sendResponse(
+          res,
+          402,
+          'account is locked for 2 hrs',
+        );
+      }
+
+      // check if the email is verified
       if (!user.isVerified)
         return responseFormatter.sendResponse(
           res,
@@ -52,6 +67,8 @@ router.get('/login', checkLogin, (req, res) => {
           'email is not verified',
         );
 
+      // store jwt for session management
+      const jwtToken = jwt.sign(JSON.stringify({ email }), config.jwtSecret);
       Session.findOneAndUpdate(
         { email },
         { jwt: jwtToken },
@@ -60,7 +77,8 @@ router.get('/login', checkLogin, (req, res) => {
           if (_err) responseFormatter.internalErrorResponse();
         },
       );
-
+      // clear bad attempt count
+      clearBadAttempts(email);
       return responseFormatter.sendResponse(
         res,
         200,
@@ -72,6 +90,8 @@ router.get('/login', checkLogin, (req, res) => {
       );
     }
 
+    // password doesnt match or user doesn't exist
+    handleBadAttempt(email);
     return responseFormatter.sendResponse(res, 200, 'authentication failed');
   });
 });

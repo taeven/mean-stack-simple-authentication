@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
 const config = require('../config/config');
 const Session = require('../models/session.model');
 const responseFormatter = require('../controllers/responseFormatter');
@@ -10,7 +9,7 @@ function checkLogin(req, res, next) {
   jwt.verify(token, config.jwtSecret, (err, jwtContent) => {
     if (err) {
       res.locals.tokenError = 'Invalid token';
-      return next();
+      next();
     }
 
     Session.findOne(
