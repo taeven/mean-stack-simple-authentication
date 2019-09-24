@@ -51,7 +51,7 @@ router.get('/login', checkLogin, (req, res) => {
     // password matches
     if (user && bcrypt.compareSync(password, user.password)) {
       // check if account is still locked
-      if (user.isLocked && user.lockedTill > Date.now()) {
+      if (user.isLocked && new Date(user.lockedTill) > Date.now()) {
         return responseFormatter.sendResponse(
           res,
           402,
