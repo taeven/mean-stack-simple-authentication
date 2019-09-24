@@ -1,35 +1,55 @@
-const express = require("express");
-const User = require("../models/user.model");
-const Token = require("../models/token.model");
-const verificationController = require("../controllers/verificationController");
+/* eslint-disable no-shadow */
+const express = require('express');
+const User = require('../models/user.model');
+const Token = require('../models/token.model');
+const responseFormatter = require('../controllers/responseFormatter');
+const verificationController = require('../controllers/verificationController');
+
 const router = express.Router();
 
-router.get("/:email/:key", (req, res) => {
-    email = req.params.email;
-    key = req.params.key;
+router.get('/:email/:key', (req, res) => {
+  const { email, key } = req.params;
 
-    User.findOne({ email, isVerified: false }, (err, user) => {
-        if (!user) {
-            return res.status(400).send("bad request");
+  User.findOne({ email, isVerified: false }, (_err, user) => {
+    if (!user) {
+      return responseFormatter.sendResponse(res, 400, 'bad request');
+    }
+    Token.findOne(
+      {
+        email,
+        created_at: {
+          $lt: new Date(),
+          $gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+        },
+      },
+      (_err, token) => {
+        if (!token) {
+          if (verificationController.generateVerificationToken(email))
+            return responseFormatter.sendResponse(
+              res,
+              200,
+              'token expired, regenerated ',
+            );
+          return responseFormatter.internalErrorResponse(res);
         }
-        Token.findOne({ email }, (err, token) => {
-            if (!token) {
-                if (verificationController.generateVerificationToken(email))
-                    return res.status(200).send("token expired, regenerated ");
-                else return res.status(500).send("internal error occurred");
-            } else if (token.key == key) {
-                user.isVerified = true;
-                User.findOneAndUpdate(
-                    { email },
-                    { isVerified: true },
-                    (err, token) => {}
-                );
-                Token.findOneAndDelete({ email }, (err, token) => {});
-
-                return res.status(200).send("done");
-            } else return res.status(400).send("bad request");
-        });
-    });
+        if (token.key === key) {
+          User.findOneAndUpdate({ email }, { isVerified: true }, _err => {
+            return _err ? responseFormatter.internalErrorResponse(res) : true;
+          });
+          Token.findOneAndDelete({ email }, _err => {
+            return _err ? responseFormatter.internalErrorResponse(res) : true;
+          });
+          return responseFormatter.sendResponse(
+            res,
+            200,
+            `${token.email} is verified`,
+          );
+        }
+        return responseFormatter.sendResponse(res, 400, 'bad request');
+      },
+    );
+    return true;
+  });
 });
 
 module.exports = router;
