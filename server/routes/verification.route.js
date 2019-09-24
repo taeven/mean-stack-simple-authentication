@@ -12,7 +12,7 @@ router.get('/:email/:key', (req, res) => {
 
   User.findOne({ email, isVerified: false }, (_err, user) => {
     if (!user) {
-      return responseFormatter.sendResponse(res, 400, 'bad request');
+      return responseFormatter.badReqResponse(res);
     }
     Token.findOne(
       {
@@ -45,7 +45,7 @@ router.get('/:email/:key', (req, res) => {
             `${token.email} is verified`,
           );
         }
-        return responseFormatter.sendResponse(res, 400, 'bad request');
+        return responseFormatter.badReqResponse(res);
       },
     );
     return true;

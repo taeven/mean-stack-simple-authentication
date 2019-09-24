@@ -1,18 +1,20 @@
-function formatResponse(res, resObj) {
+function resolveHeader(res) {
   res.setHeader('Content-Type', 'application/json');
-  res.response = JSON.stringify(resObj);
-  return res;
 }
 
-function sendResponse(res, status, message) {
+function sendResponse(res, status, message, jwt) {
   const response = {
     message,
   };
-  formatResponse(res, message);
+  if (jwt) res.cookie('token', jwt);
+  resolveHeader(res);
   res.status(status).send(response);
 }
-
+function badReqResponse(res) {
+  sendResponse(res, 400, 'bad request');
+}
 function internalErrorResponse(res) {
   sendResponse(res, 500, 'some internal error occurred');
 }
-module.exports = { sendResponse, internalErrorResponse };
+
+module.exports = { sendResponse, internalErrorResponse, badReqResponse };
