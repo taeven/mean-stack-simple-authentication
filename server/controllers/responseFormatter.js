@@ -1,14 +1,12 @@
-function formatResponse(res, resObj) {
+function resolveHeader(res) {
   res.setHeader('Content-Type', 'application/json');
-  res.response = JSON.stringify(resObj);
-  return res;
 }
 
 function sendResponse(res, status, message) {
   const response = {
     message,
   };
-  formatResponse(res, message);
+  resolveHeader(res);
   res.status(status).send(response);
 }
 
