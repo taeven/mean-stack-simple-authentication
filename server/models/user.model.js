@@ -19,6 +19,8 @@ const UserSchema = new mongoose.Schema({
   jwt: { type: String, required: false },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false, required: false },
+  isLocked: { type: Boolean, default: false, required: false },
+  lockedTill: { type: Date, required: false },
 });
 
 UserSchema.plugin(uniqueValidator, { message: 'Email already exists' });
