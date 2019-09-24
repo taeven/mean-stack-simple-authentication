@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema({
       'Please enter a valid email',
     ],
   },
+  jwt: { type: String, required: false },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false, required: false },
 });
