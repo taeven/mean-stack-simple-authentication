@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Register</h5>
+
+      <form class="needs-validation">
+        <div class="form-row mb-3">
+          <label for="inputName" class="col-sm-4 col-form-label">Name</label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control is-invalid"
+              id="inputName"
+              placeholder="Enter name"
+              required
+            />
+            <div class="invalid-feedback">
+              name is required
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="exampleInputEmail1" class="col-sm-4 col-form-label">
+            Email
+          </label>
+          <div class="col-sm-8">
+            <input
+              type="email"
+              class="form-control is-invalid"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="Enter email"
+            />
+            <div class="invalid-feedback">
+              email is required
+            </div>
+          </div>
+          <!-- <small id="emailHelp" class="form-text text-muted"
+            >We'll never share your email with anyone else.</small
+          > -->
+        </div>
+        <div class="form-row mb-3">
+          <label for="exampleInputPassword1" class="col-sm-4 col-form-label"
+            >Password</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="password"
+              class="form-control is-invalid"
+              id="exampleInputPassword1"
+              placeholder="Password"
+            />
+            <div class="invalid-feedback">
+              choose a password
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="inputCountry" class="col-sm-4 col-form-label"
+            >Country</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="name"
+              class="form-control"
+              id="inputCountry"
+              placeholder="Enter country"
+            />
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="inputTimezone" class="col-sm-4 col-form-label"
+            >Timezone</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="name"
+              class="form-control"
+              id="inputTimezone"
+              placeholder="Enter Timezone"
+            />
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="inputDate" class="col-sm-4 col-form-label">Dob</label>
+          <div class="col-sm-8">
+            <input
+              type="date"
+              class="form-control is-invalid"
+              id="inputDate"
+              placeholder="Enter date"
+              required
+            />
+          </div>
+          <div class="invalid-feedback">
+            choose your date of birth
+          </div>
+        </div>
+
+        <button class="btn btn-success">Sign Up</button>
+        <button id="login" type="button" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+</div>

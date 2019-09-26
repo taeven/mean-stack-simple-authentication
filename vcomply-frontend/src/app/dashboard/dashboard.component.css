@@ -1,0 +1,27 @@
+/* .catagory {
+  background: red;
+}
+.collapsed {
+  background: blue;
+} */
+.cat-head {
+  width: 80%;
+}
+.card-header {
+  color: white;
+  display: flex;
+  background: #3f51b5;
+}
+.collapsed {
+  color: #212529;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.cat-performance {
+  display: flex;
+}
+
+.cat-perf-indv {
+  width: 2.5rem;
+  text-align: center;
+  margin-right: 0.5rem;
+}
