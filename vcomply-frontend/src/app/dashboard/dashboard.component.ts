@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { reportsData } from '../../assets/compliance.json';
 import { stringify } from 'querystring';
 import { ThrowStmt } from '@angular/compiler';
+import { UserService } from '../services/user.service.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +14,7 @@ export class DashboardComponent implements OnInit {
   public overallPerformance = [0, 0, 0];
   public reports = new Map<string, any>();
   public categories = [];
-  constructor() {
+  constructor(private userService: UserService, private router: Router) {
     for (var report in reportsData) {
       // console.log(reportsData[report]);
 
@@ -35,6 +37,14 @@ export class DashboardComponent implements OnInit {
     console.log(this.reports.get('Uncatagorized'));
   }
 
+  public logout() {
+    this.userService.logout().subscribe(data => {
+      console.log(data);
+      if (data.message.includes('logged out')) {
+        this.router.navigateByUrl('/login');
+      }
+    });
+  }
   public getCategoryPerformance(cat) {
     var total = 0;
     var performance = [0, 0, 0];

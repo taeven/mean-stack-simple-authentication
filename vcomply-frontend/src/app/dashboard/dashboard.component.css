@@ -4,8 +4,18 @@
 .collapsed {
   background: blue;
 } */
+.progress {
+  background-color: #0c1e313b;
+  height: 3px;
+}
+.nav-link {
+  color: white;
+}
 .cat-head {
   width: 80%;
+}
+.card-body {
+  background-color: #dbdbdb94;
 }
 .card-header {
   color: white;
@@ -34,7 +44,7 @@
   content: '\f105';
 }
 .overall-perf {
-  height: 4rem;
+  height: 6rem;
 }
 .strong {
   text-align: center;
@@ -44,11 +54,24 @@
   border: 1px solid #d1d3d1;
 }
 .overall-perf-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
-  padding-top: 0.25rem;
   text-align: center;
-  height: 2rem;
+  height: 3rem;
 }
 .overall-perf-content {
-  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+}
+.list-group-item {
+  background-color: #fff0;
+}
+.perf-indicator {
+  justify-content: center;
+  text-align: center;
+  display: flex;
 }

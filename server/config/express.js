@@ -23,7 +23,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(compress());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+  }),
+);
 app.use('/api/', routes);
 app.use((req, res, next) => {
   const err = new HttpError(404);
