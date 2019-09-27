@@ -6,7 +6,10 @@ const responseFormatter = require('../controllers/responseFormatter');
 function checkLogin(req, res, next) {
   const { token } = req.cookies;
 
-  jwt.verify(token, config.jwtSecret, (err, jwtContent) => {
+  if (!token) {
+    return next();
+  }
+  return jwt.verify(token, config.jwtSecret, (err, jwtContent) => {
     if (err) {
       res.locals.tokenError = 'Invalid token';
       next();
@@ -18,7 +21,7 @@ function checkLogin(req, res, next) {
         if (err) responseFormatter.internalErrorResponse(res);
         if (session)
           responseFormatter.sendResponse(res, 200, {
-            email: session.email,
+            user: session.email,
             status: 'already logged in',
           });
         else next();

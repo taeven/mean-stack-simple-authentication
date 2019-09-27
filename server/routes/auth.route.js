@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const responseFormatter = require('../controllers/responseFormatter');
 const User = require('../models/user.model');
 const Session = require('../models/session.model');
-const isIpAllowed = require('../middleware/blockIp.middleware');
 const checkLogin = require('../middleware/checkLogin.middleware');
 const verificationController = require('../controllers/verificationController');
 const {
@@ -42,7 +41,7 @@ router.post('/user', (req, res) => {
   );
 });
 
-router.get('/login', checkLogin, (req, res) => {
+router.post('/login', checkLogin, (req, res) => {
   const { email, password } = req.body;
   const { ip, hostname } = req;
 
@@ -99,14 +98,18 @@ router.get('/login', checkLogin, (req, res) => {
   });
 });
 
-router.get('/logout/:email', (req, res) => {
-  const { email } = req.params;
-  Session.findOneAndRemove({ email }, (err, doc) => {
+router.get('/logout', (req, res) => {
+  const { token } = req.cookies;
+  Session.findOneAndRemove({ jwt: token }, (err, doc) => {
     if (err) return responseFormatter.internalErrorResponse(res);
     if (!doc)
       return responseFormatter.sendResponse(res, 200, 'already logged out');
 
     return responseFormatter.sendResponse(res, 200, 'user logged out');
   });
+});
+
+router.get('/me', checkLogin, (req, res) => {
+  return responseFormatter.sendResponse(res, 200, 'not logged in');
 });
 module.exports = router;
