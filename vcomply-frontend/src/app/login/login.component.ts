@@ -9,17 +9,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  public error = '';
+
   constructor(private userService: UserService, private router: Router) {}
 
   public login(f: NgForm) {
-    console.log(f.value);
-    this.userService.login(f.value).subscribe(data => {
-      console.log(data);
-      if (data.message.user) {
-        console.log('here');
-        this.router.navigateByUrl('/dashboard');
-      }
-    });
+    if (f.valid)
+      this.userService.login(f.value).subscribe(
+        data => {
+          console.log(data);
+          if (data.message.user) {
+            this.router.navigateByUrl('/dashboard');
+          } else {
+            this.error = 'Invalid credentials!!';
+          }
+        },
+        err => {
+          if (err.status == 403) {
+            this.error = 'Account is locked for 2 hrs';
+          } else if (err.status == 401) {
+            this.error = 'Email is not verified';
+          } else this.error = 'Bad Request';
+
+          console.log(err);
+        },
+      );
+  }
+
+  public signup() {
+    this.router.navigateByUrl('/signup');
   }
 
   ngOnInit() {

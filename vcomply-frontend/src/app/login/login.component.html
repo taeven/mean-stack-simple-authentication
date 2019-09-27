@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Login</h5>
-      <form #f="ngForm" class="card-text" (ngSubmit)="login(f)">
+      <form #f="ngForm" class="card-text was-validated" (ngSubmit)="login(f)">
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
           <input
@@ -12,6 +12,7 @@
             aria-describedby="emailHelp"
             name="email"
             placeholder="Enter email"
+            required
             ngModel
           />
           <small id="emailHelp" class="form-text text-muted"
@@ -27,15 +28,24 @@
             id="exampleInputPassword1"
             placeholder="Password"
             ngModel
+            required
           />
         </div>
         <button type="submit" class="btn btn-primary">
           Login
         </button>
-        <button type="button" id="signup" class="btn btn-success">
+        <button
+          type="button"
+          id="signup"
+          class="btn btn-success"
+          (click)="signup()"
+        >
           Sign Up
         </button>
       </form>
+      <div class="text-danger error">
+        {{ error }}
+      </div>
     </div>
   </div>
 </div>
