@@ -1,4 +1,8 @@
 # mean-stack-simple-authentication
+
+## Pre-requisite
+MongoDb should be up and running on port ```27017``` (if diff port then mention in .env)
+
 ## Installation
 clone the repository and
 go to the project folder
