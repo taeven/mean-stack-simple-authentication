@@ -25,3 +25,30 @@
   text-align: center;
   margin-right: 0.5rem;
 }
+
+[data-toggle='collapse'] .fa:before {
+  content: '\f107';
+}
+
+[data-toggle='collapse'].collapsed .fa:before {
+  content: '\f105';
+}
+.overall-perf {
+  height: 4rem;
+}
+.strong {
+  text-align: center;
+}
+.col {
+  padding: 0;
+  border: 1px solid #d1d3d1;
+}
+.overall-perf-label {
+  color: white;
+  padding-top: 0.25rem;
+  text-align: center;
+  height: 2rem;
+}
+.overall-perf-content {
+  height: 2rem;
+}

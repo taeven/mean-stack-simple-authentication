@@ -1,7 +1,45 @@
-<!-- <ng-template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn">
-  <li>...</li>
-</ng-template> -->
+<nav class="navbar navbar-light bg-dark">
+  <a class="navbar-brand" href="#">
+    <img src="../../assets/vcomply.png" width="30" height="30" alt="" />
+  </a>
+</nav>
+<div class="container">
+  <div class="overall-perf row">
+    <div class="col">
+      <div class="overall-perf-label bg-success">
+        Completed on Time
+      </div>
+      <strong
+        ><div class="strong">{{ overallPerformance[0] }}%</div></strong
+      >
+    </div>
+    <div class="col">
+      <div class="overall-perf-label bg-warning">
+        Completed with delay
+      </div>
 
+      <strong
+        ><div class="strong">{{ overallPerformance[1] }}%</div></strong
+      >
+    </div>
+    <div class="col">
+      <div class="overall-perf-label bg-danger">
+        Not completed
+      </div>
+
+      <strong
+        ><div class="strong">{{ overallPerformance[2] }}%</div></strong
+      >
+    </div>
+    <!-- <div class="col">
+      <div class="overall-perf-label bg-primary">
+        Diligence score
+      </div>
+
+      <strong><div class="strong">90%</div></strong>
+    </div> -->
+  </div>
+</div>
 <div class="accordion" id="accordionExample">
   <div class="card" *ngFor="let cat of categories">
     <div
@@ -25,6 +63,7 @@
           {{ reports.get(cat).performance[2] + '%' }}
         </div>
       </div>
+      <i class="fa"></i>
     </div>
 
     <div

@@ -9,6 +9,7 @@ import { ThrowStmt } from '@angular/compiler';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  public overallPerformance = [0, 0, 0];
   public reports = new Map<string, any>();
   public categories = [];
   constructor() {
@@ -42,6 +43,9 @@ export class DashboardComponent implements OnInit {
       for (var i in v.performance) {
         performance[i] += v.performance[i];
       }
+    }
+    for (var i in performance) {
+      this.overallPerformance[i] += performance[i];
     }
 
     total = this.normalizePerformance(performance);
@@ -77,6 +81,7 @@ export class DashboardComponent implements OnInit {
       this.categories.push(k);
       this.getCategoryPerformance(k);
     });
+    this.normalizePerformance(this.overallPerformance);
     // for (var cat in this.reports) {
     // cat = cat == '' ? 'Uncatagorized' : cat.replace(/(<([^>]+)>)/gi, '');
     //   this.categories.push(cat);
