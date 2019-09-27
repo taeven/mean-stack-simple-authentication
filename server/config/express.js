@@ -12,7 +12,7 @@ const config = require('./config');
 
 const app = express();
 
-const distDir = '../../dist/';
+const distDir = '../../vcomply-frontend/dist/vcomply-frontend';
 app.use(express.static(path.join(__dirname, distDir)));
 app.use(/^((?!(api)).)*/, (req, res) => {
   res.sendFile(path.join(__dirname, `${distDir}/index.html`));

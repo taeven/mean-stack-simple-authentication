@@ -56,7 +56,7 @@ router.post('/login', checkLogin, (req, res) => {
       if (user.isLocked && new Date(user.lockedTill) > Date.now()) {
         return responseFormatter.sendResponse(
           res,
-          402,
+          403,
           'account is locked for 2 hrs',
         );
       }
@@ -65,12 +65,15 @@ router.post('/login', checkLogin, (req, res) => {
       if (!user.isVerified)
         return responseFormatter.sendResponse(
           res,
-          402,
+          401,
           'email is not verified',
         );
 
       // store jwt for session management
-      const jwtToken = jwt.sign(JSON.stringify({ email }), config.jwtSecret);
+      const jwtToken = jwt.sign(
+        JSON.stringify({ email, timeStamp: Date.now() }),
+        config.jwtSecret,
+      );
       Session.findOneAndUpdate(
         { email },
         { jwt: jwtToken },
